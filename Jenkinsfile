@@ -17,7 +17,7 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                bat 'npm install --prefix backend'
+                bat 'cd backend && npm install'
             }
         }
 
