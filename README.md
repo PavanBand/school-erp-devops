@@ -48,6 +48,7 @@ school-erp-devops
 ├── Jenkinsfile
 └── README.md
 
+
 ---
 
 ## Environment Configuration
@@ -62,6 +63,7 @@ DB_USER=postgres
 DB_PASSWORD=postgres
 DB_NAME=schooldb
 NODE_ENV=development
+
 
 ---
 
