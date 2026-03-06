@@ -2,15 +2,16 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_USERNAME = "PavanBand"
-        IMAGE_NAME = "pavanband/school-erp-devops"
+        IMAGE_NAME = "pavanbandi07/school-erp-devops"
     }
 
     stages {
 
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/PavanBand/school-erp-devops.git'
+                git branch: 'main',
+                credentialsId: 'github-credentiales',
+                url: 'https://github.com/PavanBand/school-erp-devops.git'
             }
         }
 
@@ -37,15 +38,20 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub',
-                    usernameVariable: 'USERNAME',
-                    passwordVariable: 'PASSWORD'
+                    credentialsId: 'dockerhub-credentials',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
                 )]) {
 
-                    sh 'docker login -u $USERNAME -p $PASSWORD'
-                    sh 'docker tag $IMAGE_NAME $DOCKERHUB_USERNAME/school-erp-devops:latest'
-                    sh 'docker push $DOCKERHUB_USERNAME/school-erp-devops:latest'
+                    sh 'docker login -u $DOCKER_USER -p $DOCKER_PASS'
+                    sh 'docker push $IMAGE_NAME'
                 }
+            }
+        }
+
+        stage('Cleanup') {
+            steps {
+                sh 'docker stop $(docker ps -q) || true'
             }
         }
 
