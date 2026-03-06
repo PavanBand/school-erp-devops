@@ -17,21 +17,21 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'npm install --prefix backend'
+                bat 'npm install --prefix backend'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $IMAGE_NAME .'
+                bat 'docker build -t %IMAGE_NAME% .'
             }
         }
 
         stage('Run Container Test') {
             steps {
-                sh 'docker run -d -p 5000:5000 $IMAGE_NAME'
-                sh 'sleep 10'
-                sh 'curl http://localhost:5000/health'
+                bat 'docker run -d -p 5000:5000 %IMAGE_NAME%'
+                bat 'timeout /t 10'
+                bat 'curl http://localhost:5000/health'
             }
         }
 
@@ -43,17 +43,16 @@ pipeline {
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
 
-                    sh 'docker login -u $DOCKER_USER -p $DOCKER_PASS'
-                    sh 'docker push $IMAGE_NAME'
+                    bat 'docker login -u %DOCKER_USER% -p %DOCKER_PASS%'
+                    bat 'docker push %IMAGE_NAME%'
                 }
             }
         }
 
         stage('Cleanup') {
             steps {
-                sh 'docker stop $(docker ps -q) || true'
+                bat 'docker stop $(docker ps -q)'
             }
         }
-
     }
 }
