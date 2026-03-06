@@ -1,0 +1,26 @@
+{
+  "name": "school-erp-backend",
+  "version": "1.0.0",
+  "description": "Backend service for School ERP system (DevOps evaluation project)",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node app.js",
+    "test": "echo \"No tests configured\""
+  },
+  "keywords": [
+    "devops",
+    "docker",
+    "nodejs",
+    "express",
+    "school-erp"
+  ],
+  "author": "Pavan Bandi",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "pg": "^8.20.0",
+    "redis": "^5.11.0"
+  }
+}
