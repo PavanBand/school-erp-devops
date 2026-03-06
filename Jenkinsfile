@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         IMAGE_NAME = "pavanbandi07/school-erp-devops"
+        CONTAINER_NAME = "school-erp-test"
     }
 
     stages {
@@ -29,8 +30,8 @@ pipeline {
 
         stage('Run Container Test') {
             steps {
-                bat 'docker run -d -p 5000:5000 %IMAGE_NAME%'
-                bat 'timeout /t 10'
+                bat 'docker run -d --name %CONTAINER_NAME% -p 5000:5000 %IMAGE_NAME%'
+                powershell 'Start-Sleep -Seconds 10'
                 bat 'curl http://localhost:5000/health'
             }
         }
@@ -51,7 +52,8 @@ pipeline {
 
         stage('Cleanup') {
             steps {
-                bat 'docker stop $(docker ps -q)'
+                bat 'docker stop %CONTAINER_NAME%'
+                bat 'docker rm %CONTAINER_NAME%'
             }
         }
     }
