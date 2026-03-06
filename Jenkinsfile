@@ -30,6 +30,7 @@ pipeline {
 
         stage('Run Container Test') {
             steps {
+                bat 'docker rm -f %CONTAINER_NAME% 2>nul || echo container not found'
                 bat 'docker run -d --name %CONTAINER_NAME% -p 5000:5000 %IMAGE_NAME%'
                 powershell 'Start-Sleep -Seconds 10'
                 bat 'curl http://localhost:5000/health'
